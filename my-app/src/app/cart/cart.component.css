@@ -1,0 +1,27 @@
+.button1{
+    width: 40px;
+    height: 40px;
+    border-color: blue;
+    background-color: blue;
+  }
+
+  .btn{
+    background-color: rgba(11, 37, 236, 0.603);
+  }
+
+
+  @media screen and (max-width: 500px) {
+    body{
+      width: 100%;
+    }
+
+   
+  }
+
+  @media screen and (min-width: 500px) {
+    body{
+      width: 60%;
+    }
+
+   
+  }

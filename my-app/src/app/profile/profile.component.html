@@ -1,0 +1,19 @@
+<br>
+<body style="background-color: white;margin:auto;width: 50%;padding: 10px;">
+  
+  <h1 style="text-align: center;">Profile</h1>
+<input disabled  placeholder="{{user.name}}" name="name" class="input" ><br><br>
+<input disabled  placeholder="{{user.email}}" name="email" class="input" ><br><br>
+<form (ngSubmit)="phone()">
+<input type="number"  placeholder="{{phoneno}}" [(ngModel)]="userphone.phno" name="phno" class="input" > <button type="submit" class="btn">Update</button></form><br><br>
+<form (ngSubmit)="address()">
+<textarea rows="4"  placeholder="{{add}}" [(ngModel)]="useradd.add" name="add" class="input" ></textarea><button type="submit" class="btn">Update</button></form><br><br>
+<form (ngSubmit)="password()">
+  <mat-error style="color: red;background-color: white;">{{error}}</mat-error><br>
+<input type="password"  placeholder="Change Password" [(ngModel)]="pwd.password1" name="password1" class="input" ><br><br>
+<input type="password"  placeholder="Confirm Password" [(ngModel)]="pwd.password2" name="password2" class="input" ><br><br>
+<button type="submit" class="btn">Update</button>
+</form>
+<br><br>
+
+</body>
