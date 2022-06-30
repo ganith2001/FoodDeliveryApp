@@ -8,7 +8,7 @@
 <input type="number"  placeholder="{{phoneno}}" [(ngModel)]="userphone.phno" name="phno" class="input" > <button type="submit" class="btn">Update</button></form><br><br>
 <form (ngSubmit)="address()">
 <textarea rows="4"  placeholder="{{add}}" [(ngModel)]="useradd.add" name="add" class="input" ></textarea><button type="submit" class="btn">Update</button></form><br><br>
-<form (ngSubmit)="password()">
+<form (ngSubmit)="password()" >
   <mat-error style="color: red;background-color: white;">{{error}}</mat-error><br>
 <input type="password"  placeholder="Change Password" [(ngModel)]="pwd.password1" name="password1" class="input" ><br><br>
 <input type="password"  placeholder="Confirm Password" [(ngModel)]="pwd.password2" name="password2" class="input" ><br><br>
