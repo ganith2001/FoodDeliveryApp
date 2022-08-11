@@ -32,7 +32,7 @@ private _url:string="/assets/data/data.json";
   createUser(name: string,email: string,password: string){
     
     const authData={name:name,email:email,password:password};
-  
+  console.log(authData)
     this.http.post("http://localhost:3000/signup",authData)
     .subscribe(response=>{
 
