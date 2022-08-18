@@ -17,7 +17,7 @@ import { ProfileComponent } from '../profile/profile.component';
     {path:'',redirectTo:'/home',pathMatch:"full"}
 ];
 
-if(sessionStorage.getItem('username')){
+if(sessionStorage.getItem('token')){
    var routes:Routes=[
    
     {path:'home',component:MenuComponent},

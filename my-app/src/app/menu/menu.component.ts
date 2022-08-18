@@ -68,12 +68,12 @@ export class MenuComponent implements OnInit {
   onadd(id){
   
       this._menus.updateCart(id);
-      window.location.reload();
+      //window.location.reload();
   }
   onremove(id){
-    
-    this._menus.remove(id);
-    window.location.reload();
+    console.log("lol")
+    this._menus.removeCart(id);
+   // window.location.reload();
   } 
 
 

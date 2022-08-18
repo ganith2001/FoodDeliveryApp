@@ -68,7 +68,7 @@
     </mat-card-content>
     <mat-card-actions>
       <button class="btn" mat-button>&#8377;{{item.price}}</button>
-      <button class="btn" *ngIf="arr2.indexOf(item._id) == -1" mat-button (click)="onadd(item._id)">Add</button>
+      <button class="btn" *ngIf="arr2.indexOf(item._id) == -1" mat-button (click)="onadd(item._id)">Add +</button>
       <button class="btn" *ngIf="arr2.indexOf(item._id) > -1"  style="background-color: red;" mat-button (click)="onremove(item._id)">Remove</button>
       <button class="btn" >{{item.rating}}	<mat-icon>grade</mat-icon></button>
     </mat-card-actions>

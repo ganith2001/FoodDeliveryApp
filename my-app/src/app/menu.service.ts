@@ -9,156 +9,154 @@ import { Iuser } from './usertype';
   providedIn: 'root'
 })
 export class MenuService {
+
   private token:string; 
   private tokentimer:any;
-  private authStatusListener = new Subject<boolean>();
-private _url:string="/assets/data/data.json";
+  //private authStatusListener = new Subject<boolean>();
+  //private _url:string="/assets/data/data.json";
   constructor(private http:HttpClient) { }
+
   getMenu():Observable<Imenu>{
-    return this.http.get<Imenu>("http://localhost:3000/api/posts");
-    
+    return this.http.get<Imenu>("http://54.237.202.253:3000/api/posts"); 
   }
 
   getNonveg():Observable<Imenu>{
-    return this.http.get<Imenu>("http://localhost:3000/api/posts/nonveg");
-    
+    return this.http.get<Imenu>("http://54.237.202.253:3000/api/posts/nonveg");
   }
 
   getveg():Observable<Imenu>{
-    return this.http.get<Imenu>("http://localhost:3000/api/posts/veg");
-    
+    return this.http.get<Imenu>("http://54.237.202.253:3000/api/posts/veg");
   }
 
   createUser(name: string,email: string,password: string){
-    
+    var res:any;
     const authData={name:name,email:email,password:password};
-  console.log(authData)
-    this.http.post("http://localhost:3000/signup",authData)
+    this.http.post("http://54.237.202.253:3000/signup",authData)
     .subscribe(response=>{
-
+        res=response
         window.location.reload();
     })
-}
+    console.log(res)
+  }
 
-finduser(email:string,password:string){
+  finduser(email:string,password:string){
 
-  const mail={email:email,password:password}
-  this.http.post<Itoken>("http://localhost:3000/login",mail).subscribe(
-    response=>{
- 
-      const token=response.token;
-      this.token=token;
-      sessionStorage.setItem('token',this.token);
-      const expiresInDuration=response.expiresIn;
-      this.tokentimer=setTimeout(()=>{
+    const mail={email:email,password:password}
+    this.http.post<Itoken>("http://54.237.202.253:3000/login",mail).subscribe(
+      response=>{
+        const token=response.token;
+        this.token=token;
+        sessionStorage.setItem('token',this.token);
+        const expiresInDuration=response.expiresIn;
+        this.tokentimer=setTimeout(()=>{
           this.logout();
-      },expiresInDuration);
-      window.location.reload();
+        },expiresInDuration);
+        window.location.reload();
     
-  }
-  )
-
-  
-}
-
-logout(){
-  this.token=null;
-
-  clearTimeout(this.tokentimer);
-  sessionStorage.removeItem('token');
-  sessionStorage.removeItem('user_id');
-  sessionStorage.removeItem('username');
-}
-
-getuser(){
-
-const token={token:sessionStorage.getItem('token')}
-   this.http.post<Iuser>("http://localhost:3000/token",token).subscribe(
-    data =>{ 
-     
-      sessionStorage.setItem('user_id',data._id.toString())
-      sessionStorage.setItem('username',data.name)
-
-
-}
-
-   );
-
-}
-
-updateCart(itemid){
-  const item={name:sessionStorage.getItem('user_id'),item:itemid}
-
-  this.http.post("http://localhost:3000/addcart",item).subscribe(response=>{
-
-  })
-}
-
-findItems(){
-  const userid={id:sessionStorage.getItem('user_id')}
- 
-  return this.http.post("http://localhost:3000/findItem",userid)
-}
-
-findItemsDetails(arr){
-  
-  const item={id:arr}
-  return this.http.post("http://localhost:3000/findDetails",item)
-}
-
-update(id:any,quantity:any){
- 
-  const item={userid:sessionStorage.getItem('user_id'),menuid:id,quan:quantity}
-  this.http.post("http://localhost:3000/update",item).subscribe(data =>{
-
-  })
-}
-
-
-display(){
-
-  const token={token:sessionStorage.getItem('token')}
-   return this.http.post<Iuser>("http://localhost:3000/token",token)
-  
+      })
   }
 
-  remove(id){
+  logout() {
+    this.token=null;
+    clearTimeout(this.tokentimer);
+    sessionStorage.removeItem('token');
+  }
+
+  getuser():Observable<any>{
    
-    const item={userid:sessionStorage.getItem('user_id'),menuid:id}
-    this.http.post("http://localhost:3000/removeItem",item).subscribe(data =>{
-    
+    const token={token:sessionStorage.getItem('token')}
+    var subject = new Subject<string>();
+    let username
+    this.http.post<Iuser>("http://54.237.202.253:3000/token",token).subscribe(
+    data =>{  
+      username=[data.name,data._id]
+      subject.next(username);
+    });
+   return subject.asObservable()
+
+  }
+
+  updateCart(itemid){
+    this.getuser().subscribe(
+    data=>{
+      const item={name:data[1],item:itemid}
+      this.http.post("http://54.237.202.253:3000/addcart",item).subscribe(data=>{    
+        window.location.reload();
+      })
+    })  
+  }
+
+  findItems(){
+    const userid={token:sessionStorage.getItem('token')}
+    return this.http.post("http://54.237.202.253:3000/findItem",userid)
+  }
+
+  findItemsDetails(arr){ 
+    const item={id:arr}
+    return this.http.post("http://54.237.202.253:3000/findDetails",item)
+  }
+
+  update(id:any,quantity:any){
+    console.log("k")
+    this.getuser().subscribe(
+    data=>{
+      const item={userid:data[1],menuid:id,quan:quantity}
+      this.http.post("http://54.237.202.253:3000/update",item).subscribe(data =>{
+        window.location.reload();
+      })
     })
+  }
+
+
+  display(){
+    const token={token:sessionStorage.getItem('token')}
+    return this.http.post<Iuser>("http://54.237.202.253:3000/token",token)
+  }
+
+  removeCart(id){
+    this.getuser().subscribe(
+      data=>{
+        const item={userid:data[1],menuid:id}
+        this.http.post("http://54.237.202.253:3000/removeItem",item).subscribe(data =>{
+          window.location.reload();    
+        })
+      })
   }
 
 
   findUserDetails(){
-   
-    const user={id:sessionStorage.getItem('user_id')}
-    return this.http.post("http://localhost:3000/profile",user)
+    const user={token:sessionStorage.getItem('token')}
+    return this.http.post("http://54.237.202.253:3000/profile",user)
   }
 
   updatePhone(phno){
-    const ph={id:sessionStorage.getItem('user_id'),phone:phno}
-
-    this.http.post("http://localhost:3000/phone",ph).subscribe(data=>{
- 
-    })
+    this.getuser().subscribe(
+      data=>{
+        const ph={id:data[1],phone:phno}
+        this.http.post("http://54.237.202.253:3000/phone",ph).subscribe(data=>{
+          window.location.reload();
+        })    
+      })  
   }
 
   updateAdress(address){
-    const a={id:sessionStorage.getItem('user_id'),add:address}
-  
-    this.http.post("http://localhost:3000/ad",a).subscribe(data=>{
-    
+    this.getuser().subscribe(
+    data=>{
+      const a={id:data[1],add:address}
+      this.http.post("http://54.237.202.253:3000/ad",a).subscribe(data=>{
+        window.location.reload();
+      })
     })
   }
 
   updatepassword(pwd){
-    const pass={id:sessionStorage.getItem('user_id'),password:pwd}
-  
-    this.http.post("http://localhost:3000/passw",pass).subscribe(data=>{
- 
-      window.location.reload();
-    })
+    this.getuser().subscribe(
+    data=>{
+      const pass={id:data[1],password:pwd}
+      this.http.post("http://54.237.202.253:3000/passw",pass).subscribe(data=>{
+        window.location.reload();
+      })
+    })  
   }
+  
 }

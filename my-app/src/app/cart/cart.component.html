@@ -15,10 +15,10 @@
    <tr>
     <td >{{it.description}}</td>
     <td>
-      <button  class="button1" (click)="onsub(it._id,quantity[i])" >-</button>
-      <input   disabled style="width: 35px;height:35px ;" class="search" type="text" placeholder="{{quantity[i]}}" >  
+      <button  class="button1" (click)="onsub(it._id,quantity[it._id])" >-</button>
+      <input   disabled style="width: 35px;height:35px ;" class="search" type="text" placeholder="{{quantity[it._id]}}" >  
       
-      <button  class="button1" (click)="onadd(it._id,quantity[i])">+</button>
+      <button  class="button1" (click)="onadd(it._id,quantity[it._id])">+</button>
   
     </td>
    </tr>

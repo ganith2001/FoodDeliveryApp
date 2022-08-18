@@ -6,7 +6,7 @@ import { MenuService } from '../menu.service';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-public user=[];
+public user:any;
 userphone={phno:''};
 useradd={add:''};
 phoneno:String;
@@ -17,31 +17,34 @@ pwd={password1:'',password2:''};
 
   ngOnInit() {
     this._menus.findUserDetails().subscribe(data=>{
+     
   
-      this.user=data[0];
-      if(!data[0].phone){
+      this.user=data;
+  
+      
+      if(!this.user.phone){
           this.phoneno="Phone-no";
       }
       else{
-        this.phoneno=data[0].phone;
+        this.phoneno=this.user.phone;
       }
-      if(!data[0].address){
+      if(!this.user.address){
         this.add="address";
     }
     else{
-      this.add=data[0].address;
+      this.add=this.user.address;
     }
      
     })
   }
   phone(){
     this._menus.updatePhone(this.userphone.phno)
-    window.location.reload();
+    
   }
 
   address(){
     this._menus.updateAdress(this.useradd.add)
-    window.location.reload();
+    
   }
 password(){
 
